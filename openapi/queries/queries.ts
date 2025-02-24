@@ -40,3 +40,8 @@ export const useDefaultServicePostApplications = <TData = Common.DefaultServiceP
 }, TContext>, "mutationFn">) => useMutation<TData, TError, {
   requestBody: CreateApplicationDto;
 }, TContext>({ mutationFn: ({ requestBody }) => DefaultService.postApplications({ requestBody }) as unknown as Promise<TData>, ...options });
+export const useDefaultServiceDeleteApplicationsById = <TData = Common.DefaultServiceDeleteApplicationsByIdMutationResult, TError = unknown, TContext = unknown>(options?: Omit<UseMutationOptions<TData, TError, {
+  id: string;
+}, TContext>, "mutationFn">) => useMutation<TData, TError, {
+  id: string;
+}, TContext>({ mutationFn: ({ id }) => DefaultService.deleteApplicationsById({ id }) as unknown as Promise<TData>, ...options });

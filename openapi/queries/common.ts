@@ -50,3 +50,4 @@ export type DefaultServicePostAuthRefreshMutationResult = Awaited<ReturnType<typ
 export type DefaultServicePostMoviesMutationResult = Awaited<ReturnType<typeof DefaultService.postMovies>>;
 export type DefaultServicePostStreamingServicesMutationResult = Awaited<ReturnType<typeof DefaultService.postStreamingServices>>;
 export type DefaultServicePostApplicationsMutationResult = Awaited<ReturnType<typeof DefaultService.postApplications>>;
+export type DefaultServiceDeleteApplicationsByIdMutationResult = Awaited<ReturnType<typeof DefaultService.deleteApplicationsById>>;

@@ -1,11 +1,11 @@
-"use client"
+'use client';
 
-import type React from "react"
+import type React from 'react';
 
-import { useState } from "react"
-import { Plus } from "lucide-react"
+import { useState } from 'react';
+import { Plus } from 'lucide-react';
 
-import { Button } from "@/components/ui/button"
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -13,49 +13,34 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+  DialogTrigger
+} from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { useDefaultServicePostApplications } from '@/openapi/queries';
+import { toast } from 'sonner';
+import { getQueryClient } from '@/providers/query';
 
 export function CreateApplication() {
-  const [name, setName] = useState("")
-  const [isLoading, setIsLoading] = useState(false)
-  const [open, setOpen] = useState(false)
+  const [name, setName] = useState('');
+  const [open, setOpen] = useState(false);
+  const queryClient = getQueryClient()
 
-  async function onSubmit(e: React.FormEvent) {
-    e.preventDefault()
-    setIsLoading(true)
-
-    try {
-      const response = await fetch("/applications", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ name }),
-      })
-
-      if (!response.ok) {
-        throw new Error("Failed to create application")
-      }
-
-      // toast({
-      //   title: "Application created",
-      //   description: "Your new application has been created successfully.",
-      // })
-      setOpen(false)
-      // Refresh the page to show the new application
-      window.location.reload()
-    } catch {
-      // toast({
-      //   title: "Error",
-      //   description: "Failed to create application. Please try again.",
-      //   variant: "destructive",
-      // })
-    } finally {
-      setIsLoading(false)
+  const { mutate: createApplication, isPending } = useDefaultServicePostApplications({
+    mutationKey: ['createApplication'],
+    onSuccess: () => {
+      toast.success("Your new application has been created successfully.");
+      setOpen(false);
+      queryClient.invalidateQueries({ queryKey: ["DefaultServiceGetApplications"] });
+    },
+    onError: () => {
+      toast.error("Failed to create application. Please try again.");
     }
+  });
+
+  const onSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    createApplication({ requestBody: { name } });
   }
 
   return (
@@ -79,13 +64,12 @@ export function CreateApplication() {
             </div>
           </div>
           <DialogFooter>
-            <Button type="submit" disabled={isLoading}>
-              {isLoading ? "Creating..." : "Create"}
+            <Button type="submit" disabled={isPending}>
+              {isPending ? 'Creating...' : 'Create'}
             </Button>
           </DialogFooter>
         </form>
       </DialogContent>
     </Dialog>
-  )
+  );
 }
-

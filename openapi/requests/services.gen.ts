@@ -3,7 +3,7 @@
 import type { CancelablePromise } from './core/CancelablePromise';
 import { OpenAPI } from './core/OpenAPI';
 import { request as __request } from './core/request';
-import type { GetAuthGoogleResponse, GetAuthGoogleCallbackResponse, PostAuthRefreshResponse, GetMoviesData, GetMoviesResponse, PostMoviesData, PostMoviesResponse, GetMoviesByIdData, GetMoviesByIdResponse, GetStreamingServicesData, GetStreamingServicesResponse, PostStreamingServicesData, PostStreamingServicesResponse, GetStreamingServicesByIdData, GetStreamingServicesByIdResponse, PostApplicationsData, PostApplicationsResponse, GetApplicationsResponse, GetApplicationsByIdData, GetApplicationsByIdResponse } from './types.gen';
+import type { GetAuthGoogleResponse, GetAuthGoogleCallbackResponse, PostAuthRefreshResponse, GetMoviesData, GetMoviesResponse, PostMoviesData, PostMoviesResponse, GetMoviesByIdData, GetMoviesByIdResponse, GetStreamingServicesData, GetStreamingServicesResponse, PostStreamingServicesData, PostStreamingServicesResponse, GetStreamingServicesByIdData, GetStreamingServicesByIdResponse, PostApplicationsData, PostApplicationsResponse, GetApplicationsResponse, GetApplicationsByIdData, GetApplicationsByIdResponse, DeleteApplicationsByIdData, DeleteApplicationsByIdResponse } from './types.gen';
 
 export class DefaultService {
     /**
@@ -157,7 +157,7 @@ export class DefaultService {
     }
     
     /**
-     * @returns ApplicationDto
+     * @returns GetApplicationsDto
      * @throws ApiError
      */
     public static getApplications(): CancelablePromise<GetApplicationsResponse> {
@@ -170,12 +170,28 @@ export class DefaultService {
     /**
      * @param data The data for the request.
      * @param data.id
-     * @returns ApplicationDto
+     * @returns unknown
      * @throws ApiError
      */
     public static getApplicationsById(data: GetApplicationsByIdData): CancelablePromise<GetApplicationsByIdResponse> {
         return __request(OpenAPI, {
             method: 'GET',
+            url: '/applications/{id}',
+            path: {
+                id: data.id
+            }
+        });
+    }
+    
+    /**
+     * @param data The data for the request.
+     * @param data.id
+     * @returns unknown
+     * @throws ApiError
+     */
+    public static deleteApplicationsById(data: DeleteApplicationsByIdData): CancelablePromise<DeleteApplicationsByIdResponse> {
+        return __request(OpenAPI, {
+            method: 'DELETE',
             url: '/applications/{id}',
             path: {
                 id: data.id

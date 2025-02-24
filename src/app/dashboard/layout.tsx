@@ -2,10 +2,8 @@ import AuthProvider from '@/providers/auth';
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
-      <body>
-        <AuthProvider>{children}</AuthProvider>
-      </body>
-    </html>
+    <main className="flex-1 space-y-4 p-8 pt-6">
+      <AuthProvider>{children}</AuthProvider>
+    </main>
   );
 }

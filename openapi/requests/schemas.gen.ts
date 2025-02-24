@@ -240,8 +240,45 @@ export const $ApplicationDto = {
             type: 'string'
         },
         apiKey: {
-            type: 'string'
+            type: 'object',
+            properties: {
+                key: {
+                    type: 'string'
+                }
+            },
+            required: ['key']
         }
     },
     required: ['id', 'name', 'apiKey']
+} as const;
+
+export const $GetApplicationsDto = {
+    type: 'object',
+    properties: {
+        applications: {
+            type: 'array',
+            items: {
+                type: 'object',
+                properties: {
+                    id: {
+                        type: 'string'
+                    },
+                    name: {
+                        type: 'string'
+                    },
+                    apiKey: {
+                        type: 'object',
+                        properties: {
+                            key: {
+                                type: 'string'
+                            }
+                        },
+                        required: ['key']
+                    }
+                },
+                required: ['id', 'name', 'apiKey']
+            }
+        }
+    },
+    required: ['applications']
 } as const;

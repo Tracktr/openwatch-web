@@ -77,7 +77,19 @@ export type CreateApplicationDto = {
 export type ApplicationDto = {
     id: string;
     name: string;
-    apiKey: string;
+    apiKey: {
+        key: string;
+    };
+};
+
+export type GetApplicationsDto = {
+    applications: Array<{
+        id: string;
+        name: string;
+        apiKey: {
+            key: string;
+        };
+    }>;
 };
 
 export type GetAuthGoogleResponse = unknown;
@@ -130,13 +142,19 @@ export type PostApplicationsData = {
 
 export type PostApplicationsResponse = ApplicationDto;
 
-export type GetApplicationsResponse = ApplicationDto;
+export type GetApplicationsResponse = GetApplicationsDto;
 
 export type GetApplicationsByIdData = {
     id: string;
 };
 
-export type GetApplicationsByIdResponse = ApplicationDto;
+export type GetApplicationsByIdResponse = unknown;
+
+export type DeleteApplicationsByIdData = {
+    id: string;
+};
+
+export type DeleteApplicationsByIdResponse = unknown;
 
 export type $OpenApiTs = {
     '/auth/google': {
@@ -213,7 +231,7 @@ export type $OpenApiTs = {
         };
         get: {
             res: {
-                201: ApplicationDto;
+                default: GetApplicationsDto;
             };
         };
     };
@@ -221,7 +239,13 @@ export type $OpenApiTs = {
         get: {
             req: GetApplicationsByIdData;
             res: {
-                201: ApplicationDto;
+                200: unknown;
+            };
+        };
+        delete: {
+            req: DeleteApplicationsByIdData;
+            res: {
+                200: unknown;
             };
         };
     };

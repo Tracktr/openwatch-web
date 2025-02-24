@@ -1,54 +1,37 @@
-"use client"
+'use client';
 
-import { useEffect, useState } from "react"
-import { Copy, Loader2 } from "lucide-react"
-
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-
-interface Application {
-  id: string
-  name: string
-  apiKey: string
-}
+import { Loader2, Trash2 } from 'lucide-react';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { useDefaultServiceDeleteApplicationsById, useDefaultServiceGetApplications } from '@/openapi/queries';
+import CopyButton from './copy-button';
+import { Button } from './ui/button';
+import { getQueryClient } from '@/providers/query';
+import { toast } from 'sonner';
 
 export function ApplicationList() {
-  const [applications, setApplications] = useState<Application[]>([])
-  const [isLoading, setIsLoading] = useState(true)
+  const { data, isLoading } = useDefaultServiceGetApplications();
+  const queryClient = getQueryClient();
 
-  useEffect(() => {
-    async function fetchApplications() {
-      try {
-        const response = await fetch("/applications")
-        const data = await response.json()
-        setApplications(data)
-      } catch (error) {
-        console.error("Error fetching applications:", error)
-      } finally {
-        setIsLoading(false)
-      }
+  const { mutate: deleteApplication } = useDefaultServiceDeleteApplicationsById({
+    mutationKey: ['deleteApplication'],
+    onSuccess: () => {
+      toast.success('Application deleted successfully.');
+      queryClient.invalidateQueries({ queryKey: ['DefaultServiceGetApplications'] });
+    },
+    onError: () => {
+      toast.error('Failed to delete application. Please try again.');
     }
-
-    fetchApplications()
-  }, [])
-
-  const copyApiKey = (apiKey: string) => {
-    navigator.clipboard.writeText(apiKey)
-    // toast({
-    //   title: "API Key copied",
-    //   description: "The API key has been copied to your clipboard.",
-    // })
-  }
+  });
 
   if (isLoading) {
     return (
       <div className="flex items-center justify-center p-8">
         <Loader2 className="h-8 w-8 animate-spin" />
       </div>
-    )
+    );
   }
 
-  if (applications.length === 0) {
+  if (data?.applications.length === 0) {
     return (
       <Card>
         <CardHeader>
@@ -56,23 +39,33 @@ export function ApplicationList() {
           <CardDescription>You haven&apos;t created any applications yet.</CardDescription>
         </CardHeader>
       </Card>
-    )
+    );
   }
 
   return (
     <div className="grid gap-4">
-      {applications.map((app) => (
-        <Card key={app.id}>
+      {data?.applications.map((application) => (
+        <Card key={application.id}>
           <CardHeader>
-            <CardTitle>{app.name}</CardTitle>
-            <CardDescription>Application ID: {app.id}</CardDescription>
+            <CardTitle className='flex items-center gap-2'>
+              {application.name}
+              <Button
+                variant="destructive"
+                size="icon"
+                onClick={() => deleteApplication({ id: application.id })}
+                className='ml-auto'
+              >
+                <Trash2 className="h-4 w-4" />
+              </Button>
+            </CardTitle>
+            <CardDescription>Application ID: {application.id}</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="flex items-center space-x-2">
-              <code className="relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm">{app.apiKey}</code>
-              <Button variant="outline" size="icon" onClick={() => copyApiKey(app.apiKey)}>
-                <Copy className="h-4 w-4" />
-              </Button>
+              <code className="relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm">
+                {application.apiKey.key}
+              </code>
+              <CopyButton valueToCopy={application.apiKey.key} />
             </div>
           </CardContent>
           <CardFooter>
@@ -83,6 +76,5 @@ export function ApplicationList() {
         </Card>
       ))}
     </div>
-  )
+  );
 }
-
