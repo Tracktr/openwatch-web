@@ -3,15 +3,14 @@ export async function auth() {
   // You would typically verify the JWT token here and return the session
   // For now, we'll just check if there's a token in the cookies
 
-  if (typeof window === "undefined") {
+  if (typeof window === 'undefined') {
     // Server-side
-    const { cookies } = await import("next/headers")
-    const token = cookies().get("token")
-    return token ? { user: { id: "1" } } : null
+    const { cookies } = await import('next/headers');
+    const token = (await cookies()).get('token');
+    return token ? { user: { id: '1' } } : null;
   }
 
   // Client-side
-  const token = document.cookie.includes("token")
-  return token ? { user: { id: "1" } } : null
+  const token = document.cookie.includes('token');
+  return token ? { user: { id: '1' } } : null;
 }
-

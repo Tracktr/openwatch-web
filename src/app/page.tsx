@@ -118,22 +118,15 @@ export default async function Home() {
                     <div className="rounded-md bg-muted p-4">
                       <pre className="text-sm">
                         {`{
-  "id": 27205,
-  "title": "Inception",
-  "releaseYear": 2010,
+  "id": 1,
+  "title": "The Avengers",
+  "releaseYear": 2011,
   "availability": [
     {
       "streamingService": {
         "id": 1,
         "name": "Netflix",
-        "type": "subscription"
-      }
-    },
-    {
-      "streamingService": {
-        "id": 2,
-        "name": "Prime Video",
-        "type": "rental"
+        "logoUrl": "logo.png"
       }
     }
   ]
@@ -142,7 +135,6 @@ export default async function Home() {
                     </div>
                     <Button
                       className="w-full"
-                      onClick={() => window.open("https://api.openwatch.xyz/movies/27205", "_blank")}
                     >
                       Try it yourself
                       <ArrowRight className="ml-2 h-4 w-4" />
@@ -189,7 +181,7 @@ export default async function Home() {
           </div>
         </section>
       </main>
-      <footer className="border-t py-6 md:py-0">
+      {/* <footer className="border-t py-6 md:py-0">
         <div className="container flex flex-col items-center justify-between gap-4 md:h-24 md:flex-row">
           <div className="flex flex-col items-center gap-4 px-8 md:flex-row md:gap-2 md:px-0">
             <Boxes className="h-6 w-6" />
@@ -216,7 +208,7 @@ export default async function Home() {
             </p>
           </div>
         </div>
-      </footer>
+      </footer> */}
     </div>
   )
 }
