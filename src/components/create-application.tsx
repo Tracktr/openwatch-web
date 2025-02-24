@@ -49,7 +49,7 @@ export function CreateApplication() {
       setOpen(false)
       // Refresh the page to show the new application
       window.location.reload()
-    } catch (error) {
+    } catch {
       toast({
         title: "Error",
         description: "Failed to create application. Please try again.",
