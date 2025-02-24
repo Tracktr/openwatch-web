@@ -5,7 +5,6 @@ import { Copy, Loader2 } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { useToast } from "@/hooks/use-toast"
 
 interface Application {
   id: string
@@ -16,7 +15,6 @@ interface Application {
 export function ApplicationList() {
   const [applications, setApplications] = useState<Application[]>([])
   const [isLoading, setIsLoading] = useState(true)
-  const { toast } = useToast()
 
   useEffect(() => {
     async function fetchApplications() {
@@ -36,10 +34,10 @@ export function ApplicationList() {
 
   const copyApiKey = (apiKey: string) => {
     navigator.clipboard.writeText(apiKey)
-    toast({
-      title: "API Key copied",
-      description: "The API key has been copied to your clipboard.",
-    })
+    // toast({
+    //   title: "API Key copied",
+    //   description: "The API key has been copied to your clipboard.",
+    // })
   }
 
   if (isLoading) {

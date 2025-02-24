@@ -17,13 +17,11 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { useToast } from "@/hooks/use-toast"
 
 export function CreateApplication() {
   const [name, setName] = useState("")
   const [isLoading, setIsLoading] = useState(false)
   const [open, setOpen] = useState(false)
-  const { toast } = useToast()
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -42,19 +40,19 @@ export function CreateApplication() {
         throw new Error("Failed to create application")
       }
 
-      toast({
-        title: "Application created",
-        description: "Your new application has been created successfully.",
-      })
+      // toast({
+      //   title: "Application created",
+      //   description: "Your new application has been created successfully.",
+      // })
       setOpen(false)
       // Refresh the page to show the new application
       window.location.reload()
     } catch {
-      toast({
-        title: "Error",
-        description: "Failed to create application. Please try again.",
-        variant: "destructive",
-      })
+      // toast({
+      //   title: "Error",
+      //   description: "Failed to create application. Please try again.",
+      //   variant: "destructive",
+      // })
     } finally {
       setIsLoading(false)
     }
