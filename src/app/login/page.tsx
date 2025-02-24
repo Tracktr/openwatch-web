@@ -1,17 +1,9 @@
 import { Boxes } from "lucide-react"
 import Link from "next/link"
-import { redirect } from "next/navigation"
 
 import { GoogleSignInButton } from "@/components/google-sign-in-button"
-import { auth } from "@/lib/auth"
 
 export default async function LoginPage() {
-  const session = await auth()
-
-  if (session) {
-    redirect("/dashboard")
-  }
-
   return (
     <div className="container relative min-h-screen flex-col items-center justify-center grid lg:max-w-none lg:grid-cols-2 lg:px-0">
       <div className="relative hidden h-full flex-col bg-muted p-10 text-white dark:border-r lg:flex">

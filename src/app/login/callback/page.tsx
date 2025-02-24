@@ -5,16 +5,11 @@ import { useEffect } from 'react';
 
 const LoginCallbackPage = () => {
   useEffect(() => {
-    // Get access token from URL search params
     const searchParams = new URLSearchParams(window.location.search);
     const accessToken = searchParams.get('access_token');
+    const refreshToken = searchParams.get('refresh_token');
 
-    // Log the tokens
-    console.log('Access Token:', accessToken);
-
-    // Note: Cookies should be handled server-side in Next.js
-    // Client-side can only read cookies using document.cookie
-    console.log('Document cookies:', document.cookie);
+    console.log({ accessToken, refreshToken });
   }, []);
 
   return (

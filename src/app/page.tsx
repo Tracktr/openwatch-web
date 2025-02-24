@@ -4,11 +4,8 @@ import Link from "next/link"
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { auth } from "@/lib/auth"
 
-export default async function Home() {
-  const session = await auth()
-
+const HomePage = () => {
   return (
     <div className="flex min-h-screen flex-col">
       <header className="sticky top-0 z-40 w-full border-b bg-background">
@@ -24,21 +21,12 @@ export default async function Home() {
             >
               Documentation
             </Link>
-            {session ? (
-              <Button asChild>
-                <Link href="/dashboard">
-                  Dashboard
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Link>
-              </Button>
-            ) : (
-              <Button asChild>
-                <Link href="/login">
-                  Sign In
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Link>
-              </Button>
-            )}
+            <Button asChild>
+              <Link href="/login">
+                Sign In
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Link>
+            </Button>
           </nav>
         </div>
       </header>
@@ -181,7 +169,7 @@ export default async function Home() {
           </div>
         </section>
       </main>
-      {/* <footer className="border-t py-6 md:py-0">
+      <footer className="border-t py-6 md:py-0">
         <div className="container flex flex-col items-center justify-between gap-4 md:h-24 md:flex-row">
           <div className="flex flex-col items-center gap-4 px-8 md:flex-row md:gap-2 md:px-0">
             <Boxes className="h-6 w-6" />
@@ -208,8 +196,9 @@ export default async function Home() {
             </p>
           </div>
         </div>
-      </footer> */}
+      </footer>
     </div>
   )
 }
 
+export default HomePage
