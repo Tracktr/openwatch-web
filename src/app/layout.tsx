@@ -1,20 +1,13 @@
-"use client"
-
 import type React from 'react';
 import './globals.css';
 import { Inter } from 'next/font/google';
 import Providers from '@/providers';
 import { Toaster } from '@/components/ui/sonner';
-import Link from 'next/link';
-import { ArrowRight, Boxes } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { useUserStore } from '@/stores/useUserStore';
+import { Boxes } from 'lucide-react';
 
 const inter = Inter({ subsets: ['latin'] });
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  const { accessToken } = useUserStore();
-
   return (
     <html lang="en">
       <body className={inter.className}>
@@ -26,21 +19,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                   <Boxes className="h-6 w-6" />
                   <span className="text-lg font-bold">OpenWatch</span>
                 </div>
-                <nav className="flex items-center gap-4">
-                  <Button asChild>
-                    {accessToken ? (
-                      <Link href="/logout">
-                        Sign Out
-                        <ArrowRight className="ml-2 h-4 w-4" />
-                      </Link>
-                    ) : (
-                      <Link href="/login">
-                        Sign In
-                        <ArrowRight className="ml-2 h-4 w-4" />
-                      </Link>
-                    )}
-                  </Button>
-                </nav>
               </div>
             </header>
             <main className="flex-1">{children}</main>
