@@ -31,7 +31,7 @@ export function CreateApplication() {
     onSuccess: () => {
       toast.success("Your new application has been created successfully.");
       setOpen(false);
-      queryClient.invalidateQueries({ queryKey: ["DefaultServiceGetApplications"] });
+      queryClient.invalidateQueries({ queryKey: ["ApplicationsServiceGetApplications"] });
     },
     onError: () => {
       toast.error("Failed to create application. Please try again.");
