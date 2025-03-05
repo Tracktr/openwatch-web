@@ -27,37 +27,38 @@ export function ApiKeyItem({ apiKey, applicationId, onToggle, onDelete }: ApiKey
         <div className="flex gap-2">
         </div>
       </div>
-      <div className="flex items-center gap-2 max-w-[90%]">
+      <div className="flex flex-col md:flex-row items-start md:items-center gap-2 max-w-[90%]">
         <code className="relative rounded bg-muted px-2 py-1 font-mono text-xs overflow-x-auto max-w-[80%] select-none">
           {apiKey.key}
         </code>
-        <Button
-          variant="outline"
-          size="sm"
-          className="h-7 text-xs"
-          onClick={() => {
-            clipboard.copy(apiKey.key);
-            toast.success('Copied to clipboard');
-          }}
-        >
-          {clipboard.copied ? <>Copied</> : <>Copy</>}
-        </Button>
-        <Button
-          variant="outline"
-          size="sm"
-          className="h-7 text-xs"
-          onClick={() => onToggle(applicationId, apiKey.key || '')}
-        >
-          {apiKey.enabled ? 'Disable' : 'Enable'}
-        </Button>
-        <Button
-          variant="destructive"
-          size="sm"
-          className="h-7 text-xs"
-          onClick={() => onDelete(applicationId, apiKey.key || '')}
-        >
-          Delete
-        </Button>
+        <div className='flex gap-2'>
+          <Button
+            variant="outline"
+            size="sm"
+            className="h-7 text-xs p-4"
+            onClick={() => {
+              clipboard.copy(apiKey.key);
+              toast.success('Copied to clipboard');
+            }}
+          >
+            {clipboard.copied ? <>Copied</> : <>Copy</>}
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            className="h-7 text-xs p-4"
+            onClick={() => onToggle(applicationId, apiKey.key || '')}
+          >
+            {apiKey.enabled ? 'Disable' : 'Enable'}
+          </Button>
+          <Button
+            variant="destructive"
+            size="sm"
+            className="h-7 text-xs p-4"
+            onClick={() => onDelete(applicationId, apiKey.key || '')}
+          >
+            Delete
+          </Button></div>
       </div>
     </div>
   );

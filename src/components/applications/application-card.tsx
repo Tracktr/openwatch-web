@@ -69,7 +69,7 @@ export function ApplicationCard({
       </CardContent>
       <CardFooter>
         <p className="text-sm text-muted-foreground">
-          Use this API key to authenticate requests to the OpenWatch API.
+          Use these API keys to authenticate requests to the OpenWatch API.
         </p>
       </CardFooter>
     </Card>
