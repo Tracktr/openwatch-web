@@ -17,7 +17,7 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { useDefaultServicePostApplications } from '@/openapi/queries';
+import { useApplicationsServicePostApplications } from '@/openapi/queries';
 import { toast } from 'sonner';
 import { getQueryClient } from '@/providers/query';
 
@@ -26,7 +26,7 @@ export function CreateApplication() {
   const [open, setOpen] = useState(false);
   const queryClient = getQueryClient()
 
-  const { mutate: createApplication, isPending } = useDefaultServicePostApplications({
+  const { mutate: createApplication, isPending } = useApplicationsServicePostApplications({
     mutationKey: ['createApplication'],
     onSuccess: () => {
       toast.success("Your new application has been created successfully.");

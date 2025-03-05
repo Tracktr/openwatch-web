@@ -1,27 +1,93 @@
 'use client';
 
-import { Loader2, Trash2 } from 'lucide-react';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { useDefaultServiceDeleteApplicationsById, useDefaultServiceGetApplications } from '@/openapi/queries';
-import CopyButton from './copy-button';
-import { Button } from './ui/button';
+import { Loader2 } from 'lucide-react';
+import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  useApplicationsServiceDeleteApplicationsById,
+  useApplicationsServiceDeleteApplicationsByIdApiKeysByKey,
+  useApplicationsServiceGetApplications,
+  useApplicationsServicePatchApplicationsByIdApiKeysByKey,
+  useApplicationsServicePostApplicationsByIdApiKeys
+} from '@/openapi/queries';
 import { getQueryClient } from '@/providers/query';
 import { toast } from 'sonner';
+import { useState } from 'react';
+import { ApplicationCard } from './applications/application-card';
+import { CreateApiKeyDialog } from './applications/create-api-key-dialog';
 
 export function ApplicationList() {
-  const { data, isLoading } = useDefaultServiceGetApplications();
+  const { data, isLoading } = useApplicationsServiceGetApplications();
   const queryClient = getQueryClient();
+  const [createKeyDialogOpen, setCreateKeyDialogOpen] = useState(false);
+  const [selectedApplicationId, setSelectedApplicationId] = useState<string | null>(null);
 
-  const { mutate: deleteApplication } = useDefaultServiceDeleteApplicationsById({
+  const { mutate: deleteApplication } = useApplicationsServiceDeleteApplicationsById({
     mutationKey: ['deleteApplication'],
     onSuccess: () => {
       toast.success('Application deleted successfully.');
-      queryClient.invalidateQueries({ queryKey: ['DefaultServiceGetApplications'] });
+      queryClient.invalidateQueries({ queryKey: ['ApplicationsServiceGetApplications'] });
     },
     onError: () => {
       toast.error('Failed to delete application. Please try again.');
     }
   });
+
+  const { mutate: toggleApiKeyEnabled } = useApplicationsServicePatchApplicationsByIdApiKeysByKey({
+    mutationKey: ['toggleApiKeyEnabled'],
+    onSuccess: () => {
+      toast.success('API key successfully updated.');
+      queryClient.invalidateQueries({ queryKey: ['ApplicationsServiceGetApplications'] });
+    },
+    onError: () => {
+      toast.error('Failed to update application. Please try again.');
+    }
+  });
+
+  const { mutate: deleteApiKey } = useApplicationsServiceDeleteApplicationsByIdApiKeysByKey({
+    mutationKey: ['deleteApiKey'],
+    onSuccess: () => {
+      toast.success('API key successfully deleted.');
+      queryClient.invalidateQueries({ queryKey: ['ApplicationsServiceGetApplications'] });
+    },
+    onError: () => {
+      toast.error('Failed to delete API key. Please try again.');
+    }
+  });
+
+  const { mutate: createApiKey, isPending: isCreatingApiKey } = useApplicationsServicePostApplicationsByIdApiKeys({
+    mutationKey: ['createApiKey'],
+    onSuccess: () => {
+      toast.success('API key successfully created.');
+      queryClient.invalidateQueries({ queryKey: ['ApplicationsServiceGetApplications'] });
+      setCreateKeyDialogOpen(false);
+      setSelectedApplicationId(null);
+    },
+    onError: () => {
+      toast.error('Failed to create API key. Please try again.');
+    }
+  });
+
+  const handleCreateApiKey = (applicationId: string) => {
+    setSelectedApplicationId(applicationId);
+    setCreateKeyDialogOpen(true);
+  };
+
+  const handleSubmitApiKey = (name: string) => {
+    if (selectedApplicationId) {
+      createApiKey({
+        id: selectedApplicationId,
+        requestBody: { name }
+      });
+    }
+  };
+
+  const handleToggleApiKey = (applicationId: string, key: string) => {
+    toggleApiKeyEnabled({ id: applicationId, key });
+  };
+
+  const handleDeleteApiKey = (applicationId: string, key: string) => {
+    deleteApiKey({ id: applicationId, key });
+  };
 
   if (isLoading) {
     return (
@@ -43,38 +109,26 @@ export function ApplicationList() {
   }
 
   return (
-    <div className="grid gap-4">
-      {data?.applications.map((application) => (
-        <Card key={application.id}>
-          <CardHeader>
-            <CardTitle className='flex items-center gap-2'>
-              {application.name}
-              <Button
-                variant="destructive"
-                size="icon"
-                onClick={() => deleteApplication({ id: application.id })}
-                className='ml-auto'
-              >
-                <Trash2 className="h-4 w-4" />
-              </Button>
-            </CardTitle>
-            <CardDescription>Application ID: {application.id}</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="flex items-center space-x-2">
-              <code className="relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm">
-                {application.apiKey.key}
-              </code>
-              <CopyButton valueToCopy={application.apiKey.key} />
-            </div>
-          </CardContent>
-          <CardFooter>
-            <p className="text-sm text-muted-foreground">
-              Use this API key to authenticate requests to the OpenWatch API.
-            </p>
-          </CardFooter>
-        </Card>
-      ))}
-    </div>
+    <>
+      <div className="grid gap-4">
+        {data?.applications.map((application) => (
+          <ApplicationCard
+            key={application.id}
+            application={application}
+            onDelete={(id) => deleteApplication({ id })}
+            onCreateKey={handleCreateApiKey}
+            onToggleKey={handleToggleApiKey}
+            onDeleteKey={handleDeleteApiKey}
+          />
+        ))}
+      </div>
+
+      <CreateApiKeyDialog
+        open={createKeyDialogOpen}
+        onOpenChange={setCreateKeyDialogOpen}
+        onSubmit={handleSubmitApiKey}
+        isCreating={isCreatingApiKey}
+      />
+    </>
   );
 }

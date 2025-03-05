@@ -3,7 +3,7 @@
 import type { CancelablePromise } from './core/CancelablePromise';
 import { OpenAPI } from './core/OpenAPI';
 import { request as __request } from './core/request';
-import type { GetAuthGoogleResponse, GetAuthGoogleCallbackResponse, PostAuthRefreshResponse, GetMoviesData, GetMoviesResponse, PostMoviesData, PostMoviesResponse, GetMoviesByIdData, GetMoviesByIdResponse, GetStreamingServicesData, GetStreamingServicesResponse, PostStreamingServicesData, PostStreamingServicesResponse, GetStreamingServicesByIdData, GetStreamingServicesByIdResponse, PostApplicationsData, PostApplicationsResponse, GetApplicationsResponse, GetApplicationsByIdData, GetApplicationsByIdResponse, DeleteApplicationsByIdData, DeleteApplicationsByIdResponse } from './types.gen';
+import type { GetAuthGoogleResponse, GetAuthGoogleCallbackResponse, PostAuthRefreshResponse, GetMoviesData, GetMoviesResponse, PostMoviesData, PostMoviesResponse, GetMoviesByIdData, GetMoviesByIdResponse, PostMoviesByIdAvailabilityData, PostMoviesByIdAvailabilityResponse, PostMoviesByIdAvailabilityVoteData, PostMoviesByIdAvailabilityVoteResponse, GetStreamingServicesData, GetStreamingServicesResponse, PostStreamingServicesData, PostStreamingServicesResponse, GetStreamingServicesByIdData, GetStreamingServicesByIdResponse, PostApplicationsData, PostApplicationsResponse, GetApplicationsResponse, GetApplicationsByIdData, GetApplicationsByIdResponse, DeleteApplicationsByIdData, DeleteApplicationsByIdResponse, PostApplicationsByIdApiKeysData, PostApplicationsByIdApiKeysResponse, PatchApplicationsByIdApiKeysByKeyData, PatchApplicationsByIdApiKeysByKeyResponse, DeleteApplicationsByIdApiKeysByKeyData, DeleteApplicationsByIdApiKeysByKeyResponse } from './types.gen';
 
 export class DefaultService {
     /**
@@ -92,6 +92,40 @@ export class DefaultService {
     
     /**
      * @param data The data for the request.
+     * @param data.id
+     * @param data.requestBody
+     * @returns MovieDto
+     * @throws ApiError
+     */
+    public static postMoviesByIdAvailability(data: PostMoviesByIdAvailabilityData): CancelablePromise<PostMoviesByIdAvailabilityResponse> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/movies/{id}/availability',
+            path: {
+                id: data.id
+            },
+            body: data.requestBody,
+            mediaType: 'application/json'
+        });
+    }
+    
+    /**
+     * @param data The data for the request.
+     * @param data.requestBody
+     * @returns VoteResponseDto
+     * @throws ApiError
+     */
+    public static postMoviesByIdAvailabilityVote(data: PostMoviesByIdAvailabilityVoteData): CancelablePromise<PostMoviesByIdAvailabilityVoteResponse> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/movies/{id}/availability/vote',
+            body: data.requestBody,
+            mediaType: 'application/json'
+        });
+    }
+    
+    /**
+     * @param data The data for the request.
      * @param data.country
      * @returns GetStreamingServicesDto
      * @throws ApiError
@@ -141,6 +175,9 @@ export class DefaultService {
         });
     }
     
+}
+
+export class ApplicationsService {
     /**
      * @param data The data for the request.
      * @param data.requestBody
@@ -195,6 +232,61 @@ export class DefaultService {
             url: '/applications/{id}',
             path: {
                 id: data.id
+            }
+        });
+    }
+    
+    /**
+     * @param data The data for the request.
+     * @param data.id
+     * @param data.requestBody
+     * @returns ApiKeyDto
+     * @throws ApiError
+     */
+    public static postApplicationsByIdApiKeys(data: PostApplicationsByIdApiKeysData): CancelablePromise<PostApplicationsByIdApiKeysResponse> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/applications/{id}/api-keys',
+            path: {
+                id: data.id
+            },
+            body: data.requestBody,
+            mediaType: 'application/json'
+        });
+    }
+    
+    /**
+     * @param data The data for the request.
+     * @param data.id
+     * @param data.key
+     * @returns ApiKeyDto
+     * @throws ApiError
+     */
+    public static patchApplicationsByIdApiKeysByKey(data: PatchApplicationsByIdApiKeysByKeyData): CancelablePromise<PatchApplicationsByIdApiKeysByKeyResponse> {
+        return __request(OpenAPI, {
+            method: 'PATCH',
+            url: '/applications/{id}/api-keys/{key}',
+            path: {
+                id: data.id,
+                key: data.key
+            }
+        });
+    }
+    
+    /**
+     * @param data The data for the request.
+     * @param data.id
+     * @param data.key
+     * @returns unknown
+     * @throws ApiError
+     */
+    public static deleteApplicationsByIdApiKeysByKey(data: DeleteApplicationsByIdApiKeysByKeyData): CancelablePromise<DeleteApplicationsByIdApiKeysByKeyResponse> {
+        return __request(OpenAPI, {
+            method: 'DELETE',
+            url: '/applications/{id}/api-keys/{key}',
+            path: {
+                id: data.id,
+                key: data.key
             }
         });
     }

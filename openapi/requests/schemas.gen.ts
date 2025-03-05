@@ -36,6 +36,12 @@ export const $GetMoviesDto = {
                                         }
                                     },
                                     required: ['id', 'name', 'logoUrl']
+                                },
+                                upvotes: {
+                                    type: 'number'
+                                },
+                                downvotes: {
+                                    type: 'number'
                                 }
                             },
                             required: ['streamingService']
@@ -80,6 +86,12 @@ export const $MovieDto = {
                             }
                         },
                         required: ['id', 'name', 'logoUrl']
+                    },
+                    upvotes: {
+                        type: 'number'
+                    },
+                    downvotes: {
+                        type: 'number'
                     }
                 },
                 required: ['streamingService']
@@ -115,6 +127,51 @@ export const $CreateMovieDto = {
         }
     },
     required: ['title', 'releaseYear', 'availability']
+} as const;
+
+export const $AddMovieAvailabilityDto = {
+    type: 'object',
+    properties: {
+        streamingServiceId: {
+            type: 'number'
+        },
+        country: {
+            type: 'string'
+        }
+    },
+    required: ['streamingServiceId', 'country']
+} as const;
+
+export const $VoteAvailabilityDto = {
+    type: 'object',
+    properties: {
+        movieAvailabilityId: {
+            type: 'number'
+        },
+        isUpvote: {
+            type: 'boolean'
+        }
+    },
+    required: ['movieAvailabilityId', 'isUpvote']
+} as const;
+
+export const $VoteResponseDto = {
+    type: 'object',
+    properties: {
+        movieAvailabilityId: {
+            type: 'number'
+        },
+        upvotes: {
+            type: 'number'
+        },
+        downvotes: {
+            type: 'number'
+        },
+        success: {
+            type: 'boolean'
+        }
+    },
+    required: ['movieAvailabilityId', 'upvotes', 'downvotes', 'success']
 } as const;
 
 export const $GetStreamingServicesDto = {
@@ -224,7 +281,9 @@ export const $CreateApplicationDto = {
     properties: {
         name: {
             type: 'string',
-            minLength: 1
+            minLength: 1,
+            description: 'Application name',
+            example: 'My Application'
         }
     },
     required: ['name']
@@ -234,22 +293,50 @@ export const $ApplicationDto = {
     type: 'object',
     properties: {
         id: {
-            type: 'string'
+            type: 'string',
+            description: 'Application ID'
         },
         name: {
-            type: 'string'
+            type: 'string',
+            description: 'Application name'
         },
         apiKey: {
-            type: 'object',
-            properties: {
-                key: {
-                    type: 'string'
-                }
+            type: 'string',
+            description: 'API key (only returned when creating a new application)'
+        },
+        apiKeys: {
+            type: 'array',
+            items: {
+                type: 'object',
+                properties: {
+                    id: {
+                        type: 'number',
+                        description: 'API key ID'
+                    },
+                    name: {
+                        type: 'string',
+                        description: 'API key name'
+                    },
+                    enabled: {
+                        type: 'boolean',
+                        description: 'Whether the API key is enabled'
+                    },
+                    createdAt: {
+                        type: 'string',
+                        format: 'date-time',
+                        description: 'When the API key was created'
+                    },
+                    key: {
+                        type: 'string',
+                        description: 'The API key value (only provided when creating new keys)'
+                    }
+                },
+                required: ['id', 'name', 'enabled', 'createdAt']
             },
-            required: ['key']
+            description: 'List of API keys for this application'
         }
     },
-    required: ['id', 'name', 'apiKey']
+    required: ['id', 'name']
 } as const;
 
 export const $GetApplicationsDto = {
@@ -261,24 +348,93 @@ export const $GetApplicationsDto = {
                 type: 'object',
                 properties: {
                     id: {
-                        type: 'string'
+                        type: 'string',
+                        description: 'Application ID'
                     },
                     name: {
-                        type: 'string'
+                        type: 'string',
+                        description: 'Application name'
                     },
                     apiKey: {
-                        type: 'object',
-                        properties: {
-                            key: {
-                                type: 'string'
-                            }
+                        type: 'string',
+                        description: 'API key (only returned when creating a new application)'
+                    },
+                    apiKeys: {
+                        type: 'array',
+                        items: {
+                            type: 'object',
+                            properties: {
+                                id: {
+                                    type: 'number',
+                                    description: 'API key ID'
+                                },
+                                name: {
+                                    type: 'string',
+                                    description: 'API key name'
+                                },
+                                enabled: {
+                                    type: 'boolean',
+                                    description: 'Whether the API key is enabled'
+                                },
+                                createdAt: {
+                                    type: 'string',
+                                    format: 'date-time',
+                                    description: 'When the API key was created'
+                                },
+                                key: {
+                                    type: 'string',
+                                    description: 'The API key value (only provided when creating new keys)'
+                                }
+                            },
+                            required: ['id', 'name', 'enabled', 'createdAt']
                         },
-                        required: ['key']
+                        description: 'List of API keys for this application'
                     }
                 },
-                required: ['id', 'name', 'apiKey']
-            }
+                required: ['id', 'name']
+            },
+            description: 'List of user applications'
         }
     },
     required: ['applications']
+} as const;
+
+export const $CreateApiKeyDto = {
+    type: 'object',
+    properties: {
+        name: {
+            default: 'Default Key',
+            type: 'string',
+            description: 'Name of the API key',
+            example: 'Production Key'
+        }
+    }
+} as const;
+
+export const $ApiKeyDto = {
+    type: 'object',
+    properties: {
+        id: {
+            type: 'number',
+            description: 'API key ID'
+        },
+        name: {
+            type: 'string',
+            description: 'API key name'
+        },
+        enabled: {
+            type: 'boolean',
+            description: 'Whether the API key is enabled'
+        },
+        createdAt: {
+            type: 'string',
+            format: 'date-time',
+            description: 'When the API key was created'
+        },
+        key: {
+            type: 'string',
+            description: 'The API key value (only provided when creating new keys)'
+        }
+    },
+    required: ['id', 'name', 'enabled', 'createdAt']
 } as const;

@@ -1,7 +1,7 @@
 // generated with @7nohe/openapi-react-query-codegen@1.6.2 
 
 import { UseQueryResult } from "@tanstack/react-query";
-import { DefaultService } from "../requests/services.gen";
+import { ApplicationsService, DefaultService } from "../requests/services.gen";
 export type DefaultServiceGetAuthGoogleDefaultResponse = Awaited<ReturnType<typeof DefaultService.getAuthGoogle>>;
 export type DefaultServiceGetAuthGoogleQueryResult<TData = DefaultServiceGetAuthGoogleDefaultResponse, TError = unknown> = UseQueryResult<TData, TError>;
 export const useDefaultServiceGetAuthGoogleKey = "DefaultServiceGetAuthGoogle";
@@ -36,18 +36,23 @@ export const UseDefaultServiceGetStreamingServicesByIdKeyFn = ({ country, id }: 
   country: string;
   id: number;
 }, queryKey?: Array<unknown>) => [useDefaultServiceGetStreamingServicesByIdKey, ...(queryKey ?? [{ country, id }])];
-export type DefaultServiceGetApplicationsDefaultResponse = Awaited<ReturnType<typeof DefaultService.getApplications>>;
-export type DefaultServiceGetApplicationsQueryResult<TData = DefaultServiceGetApplicationsDefaultResponse, TError = unknown> = UseQueryResult<TData, TError>;
-export const useDefaultServiceGetApplicationsKey = "DefaultServiceGetApplications";
-export const UseDefaultServiceGetApplicationsKeyFn = (queryKey?: Array<unknown>) => [useDefaultServiceGetApplicationsKey, ...(queryKey ?? [])];
-export type DefaultServiceGetApplicationsByIdDefaultResponse = Awaited<ReturnType<typeof DefaultService.getApplicationsById>>;
-export type DefaultServiceGetApplicationsByIdQueryResult<TData = DefaultServiceGetApplicationsByIdDefaultResponse, TError = unknown> = UseQueryResult<TData, TError>;
-export const useDefaultServiceGetApplicationsByIdKey = "DefaultServiceGetApplicationsById";
-export const UseDefaultServiceGetApplicationsByIdKeyFn = ({ id }: {
+export type ApplicationsServiceGetApplicationsDefaultResponse = Awaited<ReturnType<typeof ApplicationsService.getApplications>>;
+export type ApplicationsServiceGetApplicationsQueryResult<TData = ApplicationsServiceGetApplicationsDefaultResponse, TError = unknown> = UseQueryResult<TData, TError>;
+export const useApplicationsServiceGetApplicationsKey = "ApplicationsServiceGetApplications";
+export const UseApplicationsServiceGetApplicationsKeyFn = (queryKey?: Array<unknown>) => [useApplicationsServiceGetApplicationsKey, ...(queryKey ?? [])];
+export type ApplicationsServiceGetApplicationsByIdDefaultResponse = Awaited<ReturnType<typeof ApplicationsService.getApplicationsById>>;
+export type ApplicationsServiceGetApplicationsByIdQueryResult<TData = ApplicationsServiceGetApplicationsByIdDefaultResponse, TError = unknown> = UseQueryResult<TData, TError>;
+export const useApplicationsServiceGetApplicationsByIdKey = "ApplicationsServiceGetApplicationsById";
+export const UseApplicationsServiceGetApplicationsByIdKeyFn = ({ id }: {
   id: string;
-}, queryKey?: Array<unknown>) => [useDefaultServiceGetApplicationsByIdKey, ...(queryKey ?? [{ id }])];
+}, queryKey?: Array<unknown>) => [useApplicationsServiceGetApplicationsByIdKey, ...(queryKey ?? [{ id }])];
 export type DefaultServicePostAuthRefreshMutationResult = Awaited<ReturnType<typeof DefaultService.postAuthRefresh>>;
 export type DefaultServicePostMoviesMutationResult = Awaited<ReturnType<typeof DefaultService.postMovies>>;
+export type DefaultServicePostMoviesByIdAvailabilityMutationResult = Awaited<ReturnType<typeof DefaultService.postMoviesByIdAvailability>>;
+export type DefaultServicePostMoviesByIdAvailabilityVoteMutationResult = Awaited<ReturnType<typeof DefaultService.postMoviesByIdAvailabilityVote>>;
 export type DefaultServicePostStreamingServicesMutationResult = Awaited<ReturnType<typeof DefaultService.postStreamingServices>>;
-export type DefaultServicePostApplicationsMutationResult = Awaited<ReturnType<typeof DefaultService.postApplications>>;
-export type DefaultServiceDeleteApplicationsByIdMutationResult = Awaited<ReturnType<typeof DefaultService.deleteApplicationsById>>;
+export type ApplicationsServicePostApplicationsMutationResult = Awaited<ReturnType<typeof ApplicationsService.postApplications>>;
+export type ApplicationsServicePostApplicationsByIdApiKeysMutationResult = Awaited<ReturnType<typeof ApplicationsService.postApplicationsByIdApiKeys>>;
+export type ApplicationsServicePatchApplicationsByIdApiKeysByKeyMutationResult = Awaited<ReturnType<typeof ApplicationsService.patchApplicationsByIdApiKeysByKey>>;
+export type ApplicationsServiceDeleteApplicationsByIdMutationResult = Awaited<ReturnType<typeof ApplicationsService.deleteApplicationsById>>;
+export type ApplicationsServiceDeleteApplicationsByIdApiKeysByKeyMutationResult = Awaited<ReturnType<typeof ApplicationsService.deleteApplicationsByIdApiKeysByKey>>;

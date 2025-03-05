@@ -11,6 +11,8 @@ export type GetMoviesDto = {
                 name: string;
                 logoUrl: string;
             };
+            upvotes?: number;
+            downvotes?: number;
         }>;
     }>;
 };
@@ -25,6 +27,8 @@ export type MovieDto = {
             name: string;
             logoUrl: string;
         };
+        upvotes?: number;
+        downvotes?: number;
     }>;
 };
 
@@ -35,6 +39,23 @@ export type CreateMovieDto = {
         streamingServiceId: number;
         country: string;
     }>;
+};
+
+export type AddMovieAvailabilityDto = {
+    streamingServiceId: number;
+    country: string;
+};
+
+export type VoteAvailabilityDto = {
+    movieAvailabilityId: number;
+    isUpvote: boolean;
+};
+
+export type VoteResponseDto = {
+    movieAvailabilityId: number;
+    upvotes: number;
+    downvotes: number;
+    success: boolean;
 };
 
 export type GetStreamingServicesDto = {
@@ -71,25 +92,125 @@ export type CreateStreamingServiceDto = {
 };
 
 export type CreateApplicationDto = {
+    /**
+     * Application name
+     */
     name: string;
 };
 
 export type ApplicationDto = {
+    /**
+     * Application ID
+     */
     id: string;
+    /**
+     * Application name
+     */
     name: string;
-    apiKey: {
-        key: string;
-    };
+    /**
+     * API key (only returned when creating a new application)
+     */
+    apiKey?: string;
+    /**
+     * List of API keys for this application
+     */
+    apiKeys?: Array<{
+        /**
+         * API key ID
+         */
+        id: number;
+        /**
+         * API key name
+         */
+        name: string;
+        /**
+         * Whether the API key is enabled
+         */
+        enabled: boolean;
+        /**
+         * When the API key was created
+         */
+        createdAt: string;
+        /**
+         * The API key value (only provided when creating new keys)
+         */
+        key?: string;
+    }>;
 };
 
 export type GetApplicationsDto = {
+    /**
+     * List of user applications
+     */
     applications: Array<{
+        /**
+         * Application ID
+         */
         id: string;
+        /**
+         * Application name
+         */
         name: string;
-        apiKey: {
-            key: string;
-        };
+        /**
+         * API key (only returned when creating a new application)
+         */
+        apiKey?: string;
+        /**
+         * List of API keys for this application
+         */
+        apiKeys?: Array<{
+            /**
+             * API key ID
+             */
+            id: number;
+            /**
+             * API key name
+             */
+            name: string;
+            /**
+             * Whether the API key is enabled
+             */
+            enabled: boolean;
+            /**
+             * When the API key was created
+             */
+            createdAt: string;
+            /**
+             * The API key value (only provided when creating new keys)
+             */
+            key?: string;
+        }>;
     }>;
+};
+
+export type CreateApiKeyDto = {
+    /**
+     * Name of the API key
+     */
+    name?: string;
+};
+
+export type ApiKeyDto = {
+    /**
+     * API key ID
+     */
+    id: number;
+    /**
+     * API key name
+     */
+    name: string;
+    /**
+     * Whether the API key is enabled
+     */
+    enabled: boolean;
+    /**
+     * When the API key was created
+     */
+    createdAt: string;
+    /**
+     * The API key value (only provided when creating new keys)
+     */
+    key?: string;
 };
 
 export type GetAuthGoogleResponse = unknown;
@@ -116,6 +237,19 @@ export type GetMoviesByIdData = {
 };
 
 export type GetMoviesByIdResponse = MovieDto;
+
+export type PostMoviesByIdAvailabilityData = {
+    id: number;
+    requestBody: AddMovieAvailabilityDto;
+};
+
+export type PostMoviesByIdAvailabilityResponse = MovieDto;
+
+export type PostMoviesByIdAvailabilityVoteData = {
+    requestBody: VoteAvailabilityDto;
+};
+
+export type PostMoviesByIdAvailabilityVoteResponse = VoteResponseDto;
 
 export type GetStreamingServicesData = {
     country: string;
@@ -155,6 +289,27 @@ export type DeleteApplicationsByIdData = {
 };
 
 export type DeleteApplicationsByIdResponse = unknown;
+
+export type PostApplicationsByIdApiKeysData = {
+    id: string;
+    requestBody: CreateApiKeyDto;
+};
+
+export type PostApplicationsByIdApiKeysResponse = ApiKeyDto;
+
+export type PatchApplicationsByIdApiKeysByKeyData = {
+    id: string;
+    key: string;
+};
+
+export type PatchApplicationsByIdApiKeysByKeyResponse = ApiKeyDto;
+
+export type DeleteApplicationsByIdApiKeysByKeyData = {
+    id: string;
+    key: string;
+};
+
+export type DeleteApplicationsByIdApiKeysByKeyResponse = unknown;
 
 export type $OpenApiTs = {
     '/auth/google': {
@@ -197,6 +352,22 @@ export type $OpenApiTs = {
             req: GetMoviesByIdData;
             res: {
                 200: MovieDto;
+            };
+        };
+    };
+    '/movies/{id}/availability': {
+        post: {
+            req: PostMoviesByIdAvailabilityData;
+            res: {
+                201: MovieDto;
+            };
+        };
+    };
+    '/movies/{id}/availability/vote': {
+        post: {
+            req: PostMoviesByIdAvailabilityVoteData;
+            res: {
+                201: VoteResponseDto;
             };
         };
     };
@@ -244,6 +415,28 @@ export type $OpenApiTs = {
         };
         delete: {
             req: DeleteApplicationsByIdData;
+            res: {
+                200: unknown;
+            };
+        };
+    };
+    '/applications/{id}/api-keys': {
+        post: {
+            req: PostApplicationsByIdApiKeysData;
+            res: {
+                201: ApiKeyDto;
+            };
+        };
+    };
+    '/applications/{id}/api-keys/{key}': {
+        patch: {
+            req: PatchApplicationsByIdApiKeysByKeyData;
+            res: {
+                default: ApiKeyDto;
+            };
+        };
+        delete: {
+            req: DeleteApplicationsByIdApiKeysByKeyData;
             res: {
                 200: unknown;
             };

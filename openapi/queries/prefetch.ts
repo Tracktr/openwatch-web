@@ -1,7 +1,7 @@
 // generated with @7nohe/openapi-react-query-codegen@1.6.2 
 
 import { type QueryClient } from "@tanstack/react-query";
-import { DefaultService } from "../requests/services.gen";
+import { ApplicationsService, DefaultService } from "../requests/services.gen";
 import * as Common from "./common";
 export const prefetchUseDefaultServiceGetAuthGoogle = (queryClient: QueryClient) => queryClient.prefetchQuery({ queryKey: Common.UseDefaultServiceGetAuthGoogleKeyFn(), queryFn: () => DefaultService.getAuthGoogle() });
 export const prefetchUseDefaultServiceGetAuthGoogleCallback = (queryClient: QueryClient) => queryClient.prefetchQuery({ queryKey: Common.UseDefaultServiceGetAuthGoogleCallbackKeyFn(), queryFn: () => DefaultService.getAuthGoogleCallback() });
@@ -19,7 +19,7 @@ export const prefetchUseDefaultServiceGetStreamingServicesById = (queryClient: Q
   country: string;
   id: number;
 }) => queryClient.prefetchQuery({ queryKey: Common.UseDefaultServiceGetStreamingServicesByIdKeyFn({ country, id }), queryFn: () => DefaultService.getStreamingServicesById({ country, id }) });
-export const prefetchUseDefaultServiceGetApplications = (queryClient: QueryClient) => queryClient.prefetchQuery({ queryKey: Common.UseDefaultServiceGetApplicationsKeyFn(), queryFn: () => DefaultService.getApplications() });
-export const prefetchUseDefaultServiceGetApplicationsById = (queryClient: QueryClient, { id }: {
+export const prefetchUseApplicationsServiceGetApplications = (queryClient: QueryClient) => queryClient.prefetchQuery({ queryKey: Common.UseApplicationsServiceGetApplicationsKeyFn(), queryFn: () => ApplicationsService.getApplications() });
+export const prefetchUseApplicationsServiceGetApplicationsById = (queryClient: QueryClient, { id }: {
   id: string;
-}) => queryClient.prefetchQuery({ queryKey: Common.UseDefaultServiceGetApplicationsByIdKeyFn({ id }), queryFn: () => DefaultService.getApplicationsById({ id }) });
+}) => queryClient.prefetchQuery({ queryKey: Common.UseApplicationsServiceGetApplicationsByIdKeyFn({ id }), queryFn: () => ApplicationsService.getApplicationsById({ id }) });
